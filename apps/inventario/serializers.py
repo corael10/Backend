@@ -5,7 +5,7 @@ from apps.inventario.models import *
 from apps.producto.serializers import *
 from apps.proveedor.serializers import *
 
-#from drf_writable_nested import WritableNestedModelSerializer
+
         
 
 class InventarioSerializer(ModelSerializer):
