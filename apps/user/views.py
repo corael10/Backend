@@ -4,9 +4,12 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from django.http import Http404
+from rest_framework.parsers import MultiPartParser, FormParser
+
+from rest_framework import status
 
 #from apps.user.models import User
-from apps.user.serializers import UserSerializer
+from apps.user.serializers import *
 try:
     from django.contrib.auth import get_user_model
 except ImportError: # django < 1.5
@@ -87,4 +90,35 @@ class GetUserDetalle(APIView):
         except ProtectedError:
             error_message = "This object can't be deleted!!"
             return Response(error_message,status=status.HTTP_424_FAILED_DEPENDENCY)   
-        return Response(status=status.HTTP_204_NO_CONTENT)   
+        return Response(status=status.HTTP_204_NO_CONTENT)  
+
+
+
+class FileView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self, request, *args, **kwargs):
+        file_serializer = FileSerializer(data=request.data)
+        print(file_serializer)
+        if file_serializer.is_valid():
+            file_serializer.save()
+            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetUserimg(APIView):
+    #serializer = ClienteSerializer
+   
+    def get(self, request, format=None):
+        queryset = File.objects.all()
+        
+        #queryset = User.objects.raw('select u.id, u.username, u.first_name, u.last_name, u.email, p.project_id '
+        #'from auth_user as u left join  project_projectuser as p on u.id = p.user_id;')
+        serializer  = FileSerializer(queryset,many=True) 
+
+
+        return Response(serializer.data) 
+
+
+   

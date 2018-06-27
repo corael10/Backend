@@ -48,6 +48,12 @@ CORS_ALLOW_HEADERS = (
 'x-csrftoken',
 'x-requested-with',
 )
+
+
+MEDIA_URL = 'D:/Projects/EVO_v1/Web project/projectONO/src/assets/users/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "D:/Projects/EVO_v1/Web project/projectONO/src/assets/users/")
+
+
 # Application definition
 
 INSTALLED_APPS = [
